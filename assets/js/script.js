@@ -12,7 +12,7 @@ var searchHistoryEl = document.querySelector("#search-history");
 var searchButtonEl = document.querySelector("#search-button");
 var searchBarEl = document.querySelector("#search-bar");
 
-var getApi = "http://api.openweathermap.org/";
+var getApi = "https://api.openweathermap.org/";
 
 var formSubmitHandler = function (event) {
   var searchedCity = searchInputEl.value;
