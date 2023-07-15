@@ -1,135 +1,76 @@
-// Global variables
-var today = dayjs();
-var getApi = "http://api.openweathermap.org/";
-var apiKey = "6afc16608686f24fca870dc6b62ecd42";
+// global variables
+// current date
+// var today = dayjs();
+// request URL of the 1
+var cityName = document.querySelector("#city-name");
+
+var tempDataEl = document.querySelector("#temp-data");
+var humidityDataEl = document.querySelector("#humidity-data");
+var windDataEl = document.querySelector("#wind-data");
+var searchInputEl = document.querySelector("#search-input");
+var searchHistoryEl = document.querySelector("#search-history");
+var searchButtonEl = document.querySelector("#search-button");
+var searchBarEl = document.querySelector("#search-bar");
+
+// var getApi = "http://api.openweathermap.org/";
+
+var formSubmitHandler = function (event) {
+  event.preventDefault();
+
+  var searchedCity = searchInputEl.value.trim();
+
+  if (searchedCity) {
+    console.log(searchedCity);
+  } else {
+    alert("searchedCity not found");
+  }
+};
+searchBarEl.addEventListener("submit", formSubmitHandler);
+
+// 6afc16608686f24fca870dc6b62ecd42
+
+// request URL of api 2
 
 // HTML selectors
-var searchForm = document.querySelector("#user-form");
-var searchInput = document.querySelector("#search-input");
-var pastCitiesContainer = document.querySelector("#past-container");
-var weatherContainer = document.querySelector("#weather-container");
+// var for search button
+// var for search input
+// var searchInputEl = document.queryselector('#id-')
 
-// Functions
+// functions
 
-function getForecast(lat, lon) {
-  var forecastApi =
+function getCordinates(city) {
+  var locateapi =
     getApi +
-    "data/2.5/forecast?lat=" +
-    lat +
-    "&lon=" +
-    lon +
-    "&appid=" +
-    apiKey;
-
-  fetch(forecastApi)
-    .then(function (response) {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error("Error: " + response.status);
-      }
-    })
-    .then(function (data) {
-      // Process and display the forecast data
-      var forecastContent = "";
-      data.list.forEach(function (forecast) {
-        var forecastDate = dayjs.unix(forecast.dt).format("MMM D, YYYY");
-        var forecastTemp = forecast.main.temp;
-        var forecastDescription = forecast.weather[0].description;
-        forecastContent += `
-          <div class="card mb-3">
-            <div class="card-body">
-              <h5 class="card-title">${forecastDate}</h5>
-              <p class="card-text">Temperature: ${forecastTemp} K</p>
-              <p class="card-text">Description: ${forecastDescription}</p>
-            </div>
-          </div>
-        `;
-      });
-      weatherContainer.innerHTML += forecastContent;
-    })
-    .catch(function (error) {
-      console.error(error);
+    "geo/1.0/direct?q=Londan,&limit=1&appid=6afc16608686f24fca870dc6b62ecd42";
+  fetch(locateapi).then(function (response) {
+    if (response.ok) console.log(response);
+    response.json().then(function (data) {
+      location(data);
     });
+  });
 }
 
-function getCurrentWeather(lat, lon) {
-  var weatherApi =
-    getApi + "data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
-
-  fetch(weatherApi)
-    .then(function (response) {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error("Error: " + response.status);
-      }
-    })
-    .then(function (data) {
-      // Process and display the current weather data
-      var currentWeatherContent = `
-        <div class="card mb-3">
-          <div class="card-body">
-            <h5 class="card-title">Current Weather</h5>
-            <p class="card-text">Temperature: ${data.main.temp} K</p>
-            <p class="card-text">Description: ${data.weather[0].description}</p>
-          </div>
-        </div>
-      `;
-      weatherContainer.innerHTML = currentWeatherContent;
-    })
-    .catch(function (error) {
-      console.error(error);
-    });
+function getWeather(lat, long) {
+  // add the cordinates to the url as a query parameter
+  var weatherApi = "";
+  fetch(weatherApi).then(function (response) {
+    if (response.ok) response.json().then(function (data) {});
+  });
 }
 
 function displayWeather() {
-  // Display the 5-day forecast and current weather on the page
-}
-
-function getCordinates(city) {
-  var locateApi =
-    getApi + "geo/1.0/direct?q=" + city + "&limit=5&appid=" + apiKey;
-
-  fetch(locateApi)
-    .then(function (response) {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error("Error: " + response.status);
-      }
-    })
-    .then(function (data) {
-      // Get the coordinates from the API response
-      var lat = data[0].lat;
-      var lon = data[0].lon;
-
-      // Call the functions to get forecast and current weather using the coordinates
-      getForecast(lat, lon);
-      getCurrentWeather(lat, lon);
-    })
-    .catch(function (error) {
-      console.error(error);
-    });
+  // make weather appear
 }
 
 function loadSearchedCities() {
-  // Load and display the searched cities from local storage
+  // find the searched cities in local storage
+  // one found display them on the page
+  // create button to display
 }
 
-// Event listeners
-searchForm.addEventListener("submit", function (event) {
-  event.preventDefault();
-  var city = searchInput.value.trim();
+// addEventListeners submit allows for user to press enter
 
-  if (city) {
-    // Call the function to get the coordinates based on the city
-    getCordinates(city);
+// searchbox
+// past cities buttons
 
-    // Clear the search input
-    searchInput.value = "";
-  }
-});
-
-// Load searched cities on page load
-loadSearchedCities();
+getCordinates();
