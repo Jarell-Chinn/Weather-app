@@ -11,7 +11,7 @@
 
 ## Description
 
-[Visit the Deployed Site](https://jarell-chinn.github.io/Weather-app/)
+[Visit the Deployed Site](https://jarell-chinn.github.io/Weather-app/g)
 
 ## Usage
 
